@@ -42,4 +42,10 @@ public class ExerciseServiceImpl implements ExerciseService{
     public ExerciseServiceModel findExerciseByName(String name) {
       return this.modelmapper.map(this.exerciseRepository.findByName(name),ExerciseServiceModel.class);
     }
+
+    @Override
+    public List<String> findAllExerciseNames() {
+        return this.exerciseRepository.findAll().stream()
+                .map(Exercise::getName).collect(Collectors.toList());
+    }
 }

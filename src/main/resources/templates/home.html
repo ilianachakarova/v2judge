@@ -59,9 +59,7 @@
                     </div>
                     <ol class="tm-list-group tm-list-group-alternate-color tm-list-group-pad-big">
 
-                        <li class="tm-list-group-item" >Top student one</li>
-                        <li class="tm-list-group-item" >Top student two</li>
-                        <li class="tm-list-group-item" >Top student three</li>
+                        <li th:each="s : ${bestStudents}" th:text="${s}" class="tm-list-group-item" >Top student one</li>
 
                     </ol>
                 </div>
@@ -76,9 +74,7 @@
                     <h2 class="tm-block-title">Active Exercises</h2>
                     <ol class="tm-list-group">
 
-                        <li class="tm-list-group-item">Active exercise one</li>
-                        <li class="tm-list-group-item">Active exercise two</li>
-                        <li class="tm-list-group-item">Active exercise three</li>
+                        <li th:each="e : ${activeEx}" th:text="${e}" class="tm-list-group-item">Active exercise one</li>
 
                     </ol>
                 </div>
@@ -104,11 +100,11 @@
     // Draw the chart and set the chart values
     function drawChart() {
         //ToDo all grades count
-        let six = 1;
-        let five = 2;
-        let four = 4;
-        let three = 4;
-        let two = 5;
+        let six = 4;
+        let five = 5;
+        let four = 3;
+        let three = 3;
+        let two = 1;
         let dataPie = google.visualization.arrayToDataTable([
             ['Task', 'Hours per Day'],
             ['Excellent', six],
@@ -136,7 +132,7 @@
 
     function drawAreaChart() {
         //ToDo averageGrades
-        let averageGrade = 4;
+        let averageGrade = [[${avgGrade}]];
 
         let dataArea = google.visualization.arrayToDataTable([
             ['Grades', 'Legacy', 'Now'],
@@ -165,7 +161,7 @@
 
     function drawGauge() {
         //ToDo total count of register users
-        let totalStudents = 20;
+        let totalStudents = [[${total}]];
         let dataGauge = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
             ['All users', totalStudents]

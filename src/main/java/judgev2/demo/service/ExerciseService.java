@@ -9,4 +9,6 @@ public interface ExerciseService {
     List<ExerciseServiceModel>findAllExercises();
     ExerciseServiceModel findExerciseById(String id);
     ExerciseServiceModel findExerciseByName(String name);
+
+    List<String> findAllExerciseNames();
 }

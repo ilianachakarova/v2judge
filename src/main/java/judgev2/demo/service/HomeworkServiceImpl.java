@@ -5,6 +5,7 @@ import judgev2.demo.domain.entity.Homework;
 import judgev2.demo.domain.entity.User;
 import judgev2.demo.domain.model.binding.HomeworkAddBindingModel;
 import judgev2.demo.domain.model.service.HomeworkServiceModel;
+import judgev2.demo.domain.model.service.UserServiceModel;
 import judgev2.demo.repository.ExerciseRepository;
 import judgev2.demo.repository.HomeworkRepository;
 import judgev2.demo.repository.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 @Transactional
@@ -61,5 +63,33 @@ public class HomeworkServiceImpl implements HomeworkService{
         homework.setAuthor(user);
        this.homeworkRepository.saveAndFlush(homework);
         return this.modelMapper.map(homework, HomeworkServiceModel.class);
+    }
+
+    @Override
+    public List<HomeworkServiceModel> findAllByUser(UserServiceModel author) {
+        User user = this.userRepository.findByUsername(author.getUsername()).orElse(null);
+        return this.homeworkRepository.findAllByAuthor(user).stream()
+                .map(h->this.modelMapper.map(h,HomeworkServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> findAllHomeworkNamesByUser(UserServiceModel author) {
+        return this.findAllHomework().stream().map(h->h.getExercise().getName())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public HomeworkServiceModel findOneToCheck() {
+        return this.homeworkRepository.findAll()
+                .stream()
+                .min(Comparator.comparingInt(a -> a.getComments().size()))
+                .map(h->this.modelMapper.map(h,HomeworkServiceModel.class))
+                .orElse(null);
+    }
+
+    @Override
+    public Homework findById(String id) {
+        return this.homeworkRepository.findById(id).orElse(null);
     }
 }
